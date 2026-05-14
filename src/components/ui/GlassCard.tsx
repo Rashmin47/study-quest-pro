@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   interactive?: boolean;
-  glowColor?: 'primary' | 'secondary' | 'eca' | 'none';
+  glowColor?: 'primary' | 'secondary' | 'eca' | 'tech' | 'none';
 }
 
 export function GlassCard({ 
@@ -20,6 +20,7 @@ export function GlassCard({
         glowColor === 'primary' && "hover:shadow-primary/20",
         glowColor === 'secondary' && "hover:shadow-secondary/20",
         glowColor === 'eca' && "hover:shadow-amber-500/20",
+        glowColor === 'tech' && "hover:shadow-emerald-500/20",
         className
       )}
       {...props}
@@ -34,9 +35,11 @@ export function GlassCard({
           interactive ? "group-hover:opacity-20" : "",
           glowColor === 'primary' && "bg-primary",
           glowColor === 'secondary' && "bg-secondary",
-          glowColor === 'eca' && "bg-amber-500"
+          glowColor === 'eca' && "bg-amber-500",
+          glowColor === 'tech' && "bg-emerald-500"
         )} />
       )}
+
       
       <div className="relative z-10">
         {children}
