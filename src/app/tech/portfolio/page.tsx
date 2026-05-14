@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useUserStore } from '@/lib/store';
-import { Github, ExternalLink, Download, Code2, Terminal, Linkedin, Edit3, Check, Plus, Trash2 } from 'lucide-react';
+import { ExternalLink, Download, Code2, Terminal, Edit3, Check, Plus, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SocialIcon } from 'next-social-icons';
 
 export default function PortfolioPage() {
   const { username } = useUserStore();
@@ -98,10 +99,10 @@ export default function PortfolioPage() {
               {!isEditing && (
                 <div className="absolute top-4 right-4 flex gap-2">
                   <button className="p-2 bg-black/20 hover:bg-black/40 text-white rounded-full transition-colors backdrop-blur-md">
-                    <Github size={20} />
+                    <SocialIcon  size={20} platform="github" />
                   </button>
                   <button className="p-2 bg-black/20 hover:bg-black/40 text-white rounded-full transition-colors backdrop-blur-md">
-                    <Linkedin size={20} />
+                    <SocialIcon size={20} platform="linkedin" />
                   </button>
                 </div>
               )}
@@ -176,7 +177,7 @@ export default function PortfolioPage() {
                           <div className="flex justify-between items-start mb-2">
                             <h4 className="text-lg font-bold text-white">{proj.name}</h4>
                             <div className="flex gap-2">
-                              <a href={proj.github} className="text-white/40 hover:text-white transition-colors"><Github size={18} /></a>
+                              <a href={proj.github} className="text-white/40 hover:text-white transition-colors"><SocialIcon size={18} platform="github" /></a>
                               <a href={proj.live} className="text-white/40 hover:text-emerald-400 transition-colors"><ExternalLink size={18} /></a>
                             </div>
                           </div>
