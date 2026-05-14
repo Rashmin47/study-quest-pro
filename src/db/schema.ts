@@ -29,3 +29,29 @@ export const techSkills = pgTable('tech_skills', {
   category: text('category').notNull(), // frontend, backend, tools
   masteryPercentage: integer('mastery_percentage').default(0),
 });
+export const certifications = pgTable('certifications', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').references(() => users.id).notNull(),
+  title: text('title').notNull(),
+  issuer: text('issuer').notNull(),
+  dateObtained: timestamp('date_obtained'),
+});
+
+export const roadmapMilestones = pgTable('roadmap_milestones', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').references(() => users.id).notNull(),
+  title: text('title').notNull(),
+  description: text('description'),
+  status: text('status').default('planned'), // planned, in-progress, completed
+  track: text('track'), // e.g., Full Stack, AI/ML
+});
+
+export const portfolioProjects = pgTable('portfolio_projects', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').references(() => users.id).notNull(),
+  title: text('title').notNull(),
+  description: text('description'),
+  githubUrl: text('github_url'),
+  liveUrl: text('live_url'),
+  techStack: text('tech_stack').array(),
+});
