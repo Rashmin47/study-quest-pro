@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useUserStore } from '@/lib/store';
 import { Github, ExternalLink, Download, Code2, Terminal, Linkedin, Edit3, Check, Plus, Trash2 } from 'lucide-react';
@@ -9,28 +9,54 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function PortfolioPage() {
   const { username } = useUserStore();
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [bio, setBio] = useState("Passionate CSIT student specializing in modern web technologies. Experienced in building full-stack applications with React, Next.js, and Node.js. Always eager to learn new tech stacks and solve complex problems.");
   const [title, setTitle] = useState("Full-Stack Developer (B.Sc. CSIT)");
   
   const [projects, setProjects] = useState([
     {
-      id: 1,
+      id: "1",
       name: "StudyQuest Pro",
       desc: "A comprehensive academic and IT transition hub built for CSIT students.",
       tags: ["Next.js", "TailwindCSS", "Zustand", "Framer Motion"],
       github: "#",
       live: "#"
-    },
-    {
-      id: 2,
-      name: "Algorithm Visualizer",
-      desc: "Interactive web application to visualize common sorting and pathfinding algorithms.",
-      tags: ["JavaScript", "React"],
-      github: "#",
-      live: "#"
     }
   ]);
+
+  useEffect(() => {
+    async function fetchPortfolio() {
+      try {
+        const res = await fetch('/api/tech/portfolio');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.length > 0) {
+            setProjects(data.map((p: any) => ({
+              id: p.id,
+              name: p.title,
+              desc: p.description,
+              tags: p.techStack || [],
+              github: p.githubUrl || "#",
+              live: p.liveUrl || "#"
+            })));
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch portfolio:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPortfolio();
+  }, []);
+
+  const handleSave = async () => {
+    setIsEditing(false);
+    // Logic to save the projects to /api/tech/portfolio via POST/PUT
+    // This would ideally iterate over `projects` or save profile bio/title.
+  };
+
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">

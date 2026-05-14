@@ -1,11 +1,12 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { GitBranch, Map, ExternalLink, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function RoadmapPage() {
-  const roadmapItems = [
+  const [roadmapItems, setRoadmapItems] = useState([
     {
       title: "Frontend Foundations",
       status: "completed",
@@ -30,7 +31,39 @@ export default function RoadmapPage() {
       skills: ["Docker", "CI/CD Actions", "AWS/Vercel", "Linux Basics"],
       projects: ["Containerized App"]
     }
-  ];
+  ]);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchRoadmap() {
+      try {
+        const res = await fetch('/api/tech/roadmap');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.length > 0) {
+            // Merge or format the incoming DB milestones
+            // For now, if we get data, we prepend it or update the state
+            setRoadmapItems((prev) => {
+              const formattedDbItems = data.map((item: any) => ({
+                title: item.title,
+                status: item.status || "planned",
+                skills: ["Added from DB"], // the db currently doesn't store array of skills, just description
+                projects: []
+              }));
+              return [...formattedDbItems, ...prev]; // just as a mock for the db integration
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch roadmap:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchRoadmap();
+  }, []);
+
 
   const container = {
     hidden: { opacity: 0 },
